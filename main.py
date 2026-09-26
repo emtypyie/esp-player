@@ -2,8 +2,7 @@ import cv2
 import numpy as np
 import os
 
-# --- CONFIGURATION ---
-VIDEO_PATH = "assets/maomao.mp4"  # <-- Your exact video filename
+VIDEO_PATH = "assets/maomao.mp4"  
 OUTPUT_HEADER = "frames.h"
 WIDTH = 128
 HEIGHT = 64
@@ -37,10 +36,9 @@ def process_video():
         ret, frame = cap.read()
         if not ret: break
 
-        # 1. Resize & Dither
+     
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        
-        # Center crop to 2:1 aspect ratio
+       
         h, w = gray.shape
         target_ratio = 2.0
         current_ratio = w / h
@@ -56,14 +54,14 @@ def process_video():
         resized = cv2.resize(cropped, (WIDTH, HEIGHT), interpolation=cv2.INTER_AREA)
         dithered = apply_dithering(resized)
 
-        # 2. XBM PACKING (LSB First for U8g2)
+    
         packed_frame = []
         for y in range(HEIGHT):
             for x in range(0, WIDTH, 8):
                 byte = 0
                 for bit in range(8):
                     if dithered[y, x + bit] > 0:
-                        # LSB First packing for XBM
+                     
                         byte |= (1 << bit)
                 packed_frame.append(f"0x{byte:02X}")
         
@@ -72,7 +70,7 @@ def process_video():
 
     cap.release()
 
-    # 3. Generate Header
+     Generate Header
     with open(OUTPUT_HEADER, "w") as f:
         f.write("#ifndef FRAMES_H\n#define FRAMES_H\n\n#include <Arduino.h>\n\n")
         f.write(f"#define FRAME_COUNT {frame_count}\n#define FRAME_WIDTH {WIDTH}\n#define FRAME_HEIGHT {HEIGHT}\n\n")
