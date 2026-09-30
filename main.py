@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import os
-
+#lol hi
 VIDEO_PATH = "assets/maomao.mp4"  
 OUTPUT_HEADER = "frames.h"
 WIDTH = 128
